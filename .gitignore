@@ -3,7 +3,7 @@ lib
 .DS_Store
 storybook-static
 .rpt2_cache
-tinymce-tinymce-vue-*.tgz
+hugerte-hugerte-vue-*.tgz
 .idea
 .cache
 scratch

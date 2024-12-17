@@ -1,5 +1,3 @@
-import { Fun } from '@ephox/katamari';
-import { Attribute, SugarBody, SugarElement, Insert, Remove, SelectorFind } from '@ephox/sugar';
 import Editor from 'src/main/ts/index';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -11,21 +9,22 @@ export interface Context {
   vm: any;
 }
 
-const getRoot = () => SelectorFind.descendant(SugarBody.body(), '#root').getOrThunk(() => {
-  const root = SugarElement.fromTag('div');
-  Attribute.set(root, 'id', 'root');
-  Insert.append(SugarBody.body(), root);
+const getRoot = () => document.querySelector('#root') ?? (() => {
+  const root = document.createElement('div');
+  root.id = 'root';
+  document.body.appendChild(root);
   return root;
-});
+})();
 
 // eslint-disable-next-line max-len
 const pRender = (data: Record<string, any> = {}, template: string = `<editor :init="init"></editor>`): Promise<Record<string, any>> => new Promise((resolve) => {
   const root = getRoot();
-  const mountPoint = SugarElement.fromTag('div');
-  Insert.append(root, mountPoint);
+  const mountPoint = document.createElement('div');
+  root.appendChild(mountPoint);
 
   const originalInit = data.init || {};
-  const originalSetup = originalInit.setup || Fun.noop;
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  const originalSetup = originalInit.setup || (() => {});
 
   const vm = createApp({
     template,
@@ -47,11 +46,11 @@ const pRender = (data: Record<string, any> = {}, template: string = `<editor :in
         }
       }
     }),
-  }).mount(mountPoint.dom);
+  }).mount(mountPoint);
 });
 
 const remove = () => {
-  Remove.remove(getRoot());
+  getRoot().remove();
 };
 
 export { pRender, remove, getRoot };

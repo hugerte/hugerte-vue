@@ -1,5 +1,5 @@
 <template>
-  <editor :api-key="apiKey" inline :init="tinyMCEOptions" :tag-name="tagName" :initial-value="'My header is here dear friend'"></editor>
+  <editor inline :init="hugeRTEOptions" :tag-name="tagName" :initial-value="'My header is here dear friend'"></editor>
 </template>
 
 <script>
@@ -10,8 +10,7 @@ export default {
   data(){
     return {
       tagName: 'h1',
-      apiKey: "qagffr3pkuv17a8on1afax661irst1hbr4e6tbv888sz91jc",
-      tinyMCEOptions: {
+      hugeRTEOptions: {
         menubar: false,
         plugins: [
             'link',

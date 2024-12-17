@@ -2,16 +2,15 @@ import { storiesOf } from '@storybook/vue';
 
 import { Editor } from '../src/main/ts/components/Editor';
 
-const apiKey = 'qagffr3pkuv17a8on1afax661irst1hbr4e6tbv888sz91jc';
 const content = `
 <h2 style="text-align: center;">
-  TinyMCE provides a <span style="text-decoration: underline;">full-featured</span> rich text editing experience, and a featherweight download.
+  HugeRTE provides a <span style="text-decoration: underline;">feature-rich</span> rich text editing experience.
 </h2>
 <p style="text-align: center;">
-  <strong><span style="font-size: 14pt;"><span style="color: #7e8c8d; font-weight: 600;">No matter what you're building, TinyMCE has got you covered.</span></span></strong>
+  <strong><span style="font-size: 14pt;"><span style="color: #7e8c8d; font-weight: 600;">If you're building an application that needs Rich Text Editing, check out HugeRTE!</span></span></strong>
 </p>`;
 
-storiesOf('tinymce-vue', module)
+storiesOf('hugerte-vue', module)
   .add(
     'Iframe editor',
     () => ({
@@ -19,7 +18,6 @@ storiesOf('tinymce-vue', module)
       data: () => ({ content }),
       template: `
         <editor
-          api-key="${apiKey}"
           :init="{height: 300}"
           v-model="content"
         />`
@@ -34,7 +32,6 @@ storiesOf('tinymce-vue', module)
       template: `
         <div style="padding-top: 100px;">
           <editor
-            api-key="${apiKey}"
             v-model="content"
             inline
           />
@@ -54,7 +51,6 @@ storiesOf('tinymce-vue', module)
       template: `
         <div>
           <editor
-            api-key="${apiKey}"
             :init="{height: 300}"
             v-model="content"
             @onBlur="log"
@@ -83,7 +79,6 @@ storiesOf('tinymce-vue', module)
         <div>
           <button @click="toggleDisabled">{{ disabled ? 'enable' : 'disable' }}</button>
           <editor
-            api-key="${apiKey}"
             v-bind:disabled="disabled"
             :init="{height: 300}"
             v-model="content"
@@ -94,7 +89,7 @@ storiesOf('tinymce-vue', module)
     { notes: 'Example with setting the editor into readonly mode using the disabled prop.' }
   )
   .add(
-    'cloudChannel set to 5-dev',
+    'cdnVersion set to 1',
     () => ({
       components: { Editor },
       data: () => ({ content }),
@@ -103,12 +98,11 @@ storiesOf('tinymce-vue', module)
       },
       template: `
         <editor
-          api-key="${apiKey}"
-          cloudChannel="5-dev"
+          cdnVersion="1"
           :init="{height: 300}"
           v-model="content"
         />
       `
     }),
-    { notes: 'Editor with cloudChannel set to 5-dev, please make sure to reload page to load TinyMCE 5.' }
+    { notes: 'Editor with cdnVersion set to 1, please make sure to reload page to load HugeRTE 1.' }
   );

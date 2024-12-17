@@ -11,13 +11,13 @@
     "preserveConstEnums": true,
     "strictNullChecks": true,
     "target": "es5",
-    // "lib": ["es2020.string"] // fix the mathAll issue
+    "lib": ["dom", "es2020"],
     "types": [
       "node"
     ],
     "strict": true,
     "baseUrl": ".",
-    "skipLibCheck": true // -> https://github.com/vuejs/vue-next/issues/1102
+    "skipLibCheck": true // -> https://github.com/vuejs/vue-next/issues/1102 TODO
   },
   "include": [
     "src/**/*.ts"

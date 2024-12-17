@@ -3,18 +3,17 @@ import { onBeforeMount, ref } from 'vue';
 import { ScriptLoader } from '../main/ts/ScriptLoader';
 
 import { Editor } from '../main/ts/components/Editor';
-import type { Editor as TinyMCEEditor, EditorEvent } from 'tinymce';
+import type { Editor as HugeRTEEditor, EditorEvent } from 'hugerte';
 
-const apiKey = 'qagffr3pkuv17a8on1afax661irst1hbr4e6tbv888sz91jc';
 const content = `
 <h2 style="text-align: center;">
-  TinyMCE provides a <span style="text-decoration: underline;">full-featured</span> rich text editing experience, and a featherweight download.
+  HugeRTE provides a <span style="text-decoration: underline;">feature-rich</span> rich text editing experience.
 </h2>
 <p style="text-align: center;">
-  <strong><span style="font-size: 14pt;"><span style="color: #7e8c8d; font-weight: 600;">No matter what you're building, TinyMCE has got you covered.</span></span></strong>
+  <strong><span style="font-size: 14pt;"><span style="color: #7e8c8d; font-weight: 600;">If you're building an application that needs Rich Text Editing, check out HugeRTE!</span></span></strong>
 </p>`;
 
-let lastChannel = '5';
+let lastVersion = '1';
 const getConf = (stringConf: string) => {
   let conf  = {};
   console.log('parsing: ', stringConf);
@@ -26,20 +25,20 @@ const getConf = (stringConf: string) => {
   return conf;
 }
 
-const removeTiny = () => {
-  delete (window as any).tinymce;
-  delete (window as any).tinyMCE;
+const removeHugeRTE = () => {
+  delete (window as any).hugerte;
+  delete (window as any).hugeRTE;
 };
 
-const loadTiny = (currentArgs: any) => {
-  const channel = currentArgs.channel || lastChannel; // Storybook is not handling the default for select well
-  if (channel !== lastChannel) {
-    removeTiny();
+const loadHugeRTE = (currentArgs: any) => {
+  const version = currentArgs.version || lastVersion; // Storybook is not handling the default for select well
+  if (version !== lastVersion) {
+    removeHugeRTE();
     ScriptLoader.reinitialize();
-    ScriptLoader.load(document, `https://cdn.tiny.cloud/1/${apiKey}/tinymce/${channel}/tinymce.min.js`, () => {
+    ScriptLoader.load(document, `https://cdn.jsdelivr.net/npm/hugerte@${version}/hugerte.min.js`, () => {
       console.log('script ready');
     });
-    lastChannel = channel;
+    lastVersion = version;
   }
 };
 
@@ -48,12 +47,12 @@ export default {
   title: 'Editor',
   component: Editor,
   argTypes: {
-    channel: {
+    version: {
       table: {
-        defaultValue: {summary: '5'}
+        defaultValue: {summary: '5'} // TODO: what does that mean?
       },
-      defaultValue: '7',
-      options: ['5', '5-dev', '5-testing', '6-testing', '6-stable', '7-dev', '7-testing', '7-stable'],
+      defaultValue: '1',
+      options: ['1'],
       control: { type: 'select'}
     },
     conf: {
@@ -75,39 +74,36 @@ export const Iframe: Story = (args) => ({
   components: {Editor},
   setup() {
     onBeforeMount(() => {
-      loadTiny(args);
+      loadHugeRTE(args);
     });
-    const cc = args.channel || lastChannel;
+    const cv = args.version || lastVersion;
     const conf = getConf(args.conf);
     return {
-      apiKey,
       content,
-      cloudChannel: cc,
+      cdnVersion: cv,
       conf
     }
   },
-  template: '<div ><p>Ready</p><editor :api-key="apiKey" :initialValue="content" :cloud-channel="cloudChannel" :init="conf" /></div>'
+  template: '<div ><p>Ready</p><editor :initialValue="content" :cdn-version="cdnVersion" :init="conf" /></div>'
 });
 
 export const Inline: Story = (args) => ({
   components: { Editor },
   setup() {
     onBeforeMount(() => {
-      loadTiny(args);
+      loadHugeRTE(args);
     });
-    const cc = args.channel || lastChannel;
+    const cv = args.version || lastVersion;
     const conf = getConf(args.conf);
     return {
-      apiKey,
       content,
-      cloudChannel: cc,
+      cdnVersion: cv,
       conf
     }
   },
   template: `
     <div style="padding-top: 100px;">
       <editor
-        api-key="${apiKey}"
         v-model="content"
         inline
         :init="conf"
@@ -119,16 +115,15 @@ export const Controlled: Story = (args) => ({
   components: { Editor },
   setup() {
     onBeforeMount(() => {
-      loadTiny(args);
+      loadHugeRTE(args);
     });
-    const cc = args.channel || lastChannel;
+    const cv = args.version || lastVersion;
     const conf = getConf(args.conf);
-    const log = (e: EditorEvent<any>, editor: TinyMCEEditor) => {console.log(e);};
+    const log = (e: EditorEvent<any>, editor: HugeRTEEditor) => {console.log(e);};
     const controlledContent = ref(content);
     return {
-      apiKey,
       content: controlledContent,
-      cloudChannel: cc,
+      cdnVersion: cv,
       conf,
       log
     }
@@ -136,7 +131,6 @@ export const Controlled: Story = (args) => ({
   template: `
     <div>
       <editor
-        api-key="${apiKey}"
         v-model="content"
         @onBlur="log"
         :init="conf"
@@ -154,18 +148,17 @@ export const Disable: Story = (args) => ({
   components: { Editor },
   setup() {
     onBeforeMount(() => {
-      loadTiny(args);
+      loadHugeRTE(args);
     });
-    const cc = args.channel || lastChannel;
+    const cc = args.version || lastVersion;
     const conf = getConf(args.conf);
     const disabled = ref(false);
     const toggleDisabled = (_) => {
       disabled.value = !disabled.value;
     }
     return {
-      apiKey,
       content,
-      cloudChannel: cc,
+      cdnVersion: cc,
       conf,
       disabled,
       toggleDisabled
@@ -175,7 +168,6 @@ export const Disable: Story = (args) => ({
     <div>
       <button @click="toggleDisabled">{{ disabled ? 'enable' : 'disable' }}</button>
       <editor
-        api-key="${apiKey}"
         v-bind:disabled="disabled"
         :init="conf"
         v-model="content"

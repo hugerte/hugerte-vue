@@ -1,14 +1,14 @@
 /**
  * Copyright (c) 2018-present, Ephox, Inc.
  *
- * This source code is licensed under the Apache 2 license found in the
+ * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
  */
 
 import { Ref, watch, SetupContext } from 'vue';
 import { IPropTypes } from './components/EditorPropTypes';
-import type { Editor as TinyMCEEditor, EditorEvent } from 'tinymce';
+import type { Editor as HugeRTEEditor, EditorEvent } from 'hugerte';
 
 const validEvents = [
   'onActivate',
@@ -83,7 +83,7 @@ const validEvents = [
 const isValidKey = (key: string) =>
   validEvents.map((event) => event.toLowerCase()).indexOf(key.toLowerCase()) !== -1;
 
-const bindHandlers = (initEvent: EditorEvent<any>, listeners: Record<string, any>, editor: TinyMCEEditor): void => {
+const bindHandlers = (initEvent: EditorEvent<any>, listeners: Record<string, any>, editor: HugeRTEEditor): void => {
   Object.keys(listeners)
     .filter(isValidKey)
     .forEach((key: string) => {
@@ -98,7 +98,7 @@ const bindHandlers = (initEvent: EditorEvent<any>, listeners: Record<string, any
     });
 };
 
-const bindModelHandlers = (props: IPropTypes, ctx: SetupContext, editor: TinyMCEEditor, modelValue: Ref<any>) => {
+const bindModelHandlers = (props: IPropTypes, ctx: SetupContext, editor: HugeRTEEditor, modelValue: Ref<any>) => {
   const modelEvents = props.modelEvents ? props.modelEvents : null;
   const normalizedEvents = Array.isArray(modelEvents) ? modelEvents.join(' ') : modelEvents;
 
@@ -117,7 +117,7 @@ const initEditor = (
   initEvent: EditorEvent<any>,
   props: IPropTypes,
   ctx: SetupContext,
-  editor: TinyMCEEditor,
+  editor: HugeRTEEditor,
   modelValue: Ref<any>,
   content: () => string) => {
   editor.setContent(content());

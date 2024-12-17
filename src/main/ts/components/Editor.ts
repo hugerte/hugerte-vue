@@ -1,19 +1,19 @@
 /**
  * Copyright (c) 2018-present, Ephox, Inc.
  *
- * This source code is licensed under the Apache 2 license found in the
+ * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
  */
 
 import { ScriptLoader } from '../ScriptLoader';
-import { getTinymce } from '../TinyMCE';
+import { getHugeRTE } from '../HugeRTE';
 import { isTextarea, mergePlugins, uuid, isNullOrUndefined, initEditor } from '../Utils';
 import { editorProps, IPropTypes } from './EditorPropTypes';
 import { h, defineComponent, onMounted, ref, Ref, toRefs, nextTick, watch, onBeforeUnmount, onActivated, onDeactivated } from 'vue';
-import type { Editor as TinyMCEEditor, EditorEvent, TinyMCE } from 'tinymce';
+import type { Editor as HugeRTEEditor, EditorEvent, HugeRTE } from 'hugerte';
 
-type EditorOptions = Parameters<TinyMCE['init']>[0];
+type EditorOptions = Parameters<HugeRTE['init']>[0];
 
 const renderInline = (ce: any, id: string, elementRef: Ref<Element | null>, tagName?: string) =>
   ce(tagName ? tagName : 'div', {
@@ -37,7 +37,7 @@ export const Editor = defineComponent({
     const { disabled, modelValue, tagName } = toRefs(props);
     const element: Ref<Element | null> = ref(null);
     let vueEditor: any = null;
-    const elementId: string = props.id || uuid('tiny-vue');
+    const elementId: string = props.id || uuid('hugerte-vue');
     const inlineEditor: boolean = (props.init && props.init.inline) || props.inline;
     const modelBind = !!ctx.attrs['onUpdate:modelValue'];
     let mounting = true;
@@ -57,8 +57,7 @@ export const Editor = defineComponent({
         plugins: mergePlugins(conf.plugins, props.plugins),
         toolbar: props.toolbar || (conf.toolbar),
         inline: inlineEditor,
-        license_key: props.licenseKey,
-        setup: (editor: TinyMCEEditor) => {
+        setup: (editor: HugeRTEEditor) => {
           vueEditor = editor;
           editor.on('init', (e: EditorEvent<any>) => initEditor(e, props, ctx, editor, modelValue, content));
           if (typeof conf.setup === 'function') {
@@ -69,7 +68,7 @@ export const Editor = defineComponent({
       if (isTextarea(element.value)) {
         element.value.style.visibility = '';
       }
-      getTinymce().init(finalInit);
+      getHugeRTE().init(finalInit);
       mounting = false;
     };
     watch(disabled, (disable) => {
@@ -85,18 +84,17 @@ export const Editor = defineComponent({
       if (!modelBind) {
         cache = vueEditor.getContent();
       }
-      getTinymce()?.remove(vueEditor);
+      getHugeRTE()?.remove(vueEditor);
       nextTick(() => initWrapper());
     });
     onMounted(() => {
-      if (getTinymce() !== null) {
+      if (getHugeRTE() !== null) {
         initWrapper();
       } else if (element.value && element.value.ownerDocument) {
-        const channel = props.cloudChannel ? props.cloudChannel : '7';
-        const apiKey = props.apiKey ? props.apiKey : 'no-api-key';
-        const scriptSrc: string = isNullOrUndefined(props.tinymceScriptSrc) ?
-          `https://cdn.tiny.cloud/1/${apiKey}/tinymce/${channel}/tinymce.min.js` :
-          props.tinymceScriptSrc;
+        const version = props.cdnVersion ?? '1';
+        const scriptSrc: string = isNullOrUndefined(props.hugerteScriptSrc) ?
+          `https://cdn.jsdelivr.net/npm/hugerte@${version}/hugerte.min.js` :
+          props.hugerteScriptSrc;
         ScriptLoader.load(
           element.value.ownerDocument,
           scriptSrc,
@@ -105,8 +103,8 @@ export const Editor = defineComponent({
       }
     });
     onBeforeUnmount(() => {
-      if (getTinymce() !== null) {
-        getTinymce().remove(vueEditor);
+      if (getHugeRTE() !== null) {
+        getHugeRTE().remove(vueEditor);
       }
     });
     if (!inlineEditor) {
@@ -119,12 +117,12 @@ export const Editor = defineComponent({
         if (!modelBind) {
           cache = vueEditor.getContent();
         }
-        getTinymce()?.remove(vueEditor);
+        getHugeRTE()?.remove(vueEditor);
       });
     }
     const rerender = (init: EditorOptions) => {
       cache = vueEditor.getContent();
-      getTinymce()?.remove(vueEditor);
+      getHugeRTE()?.remove(vueEditor);
       conf = { ...conf, ...init, ...defaultInitValues };
       nextTick(() => initWrapper());
     };

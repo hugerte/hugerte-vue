@@ -1,20 +1,18 @@
 /**
  * Copyright (c) 2018-present, Ephox, Inc.
  *
- * This source code is licensed under the Apache 2 license found in the
+ * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
  */
-import type { TinyMCE } from 'tinymce';
+import type { HugeRTE } from 'hugerte';
 
-type EditorOptions = Parameters<TinyMCE['init']>[0];
+type EditorOptions = Parameters<HugeRTE['init']>[0];
 
 export type CopyProps<T> = { [P in keyof T]: any };
 
 export interface IPropTypes {
-  apiKey: string;
-  licenseKey: string;
-  cloudChannel: string;
+  cdnVersion: string;
   id: string;
   init: EditorOptions & { selector?: undefined; target?: undefined };
   initialValue: string;
@@ -26,13 +24,11 @@ export interface IPropTypes {
   toolbar: string[] | string;
   modelValue: string;
   disabled: boolean;
-  tinymceScriptSrc: string;
+  hugerteScriptSrc: string;
 }
 
 export const editorProps: CopyProps<IPropTypes> = {
-  apiKey: String,
-  licenseKey: String,
-  cloudChannel: String,
+  cdnVersion: String,
   id: String,
   init: Object,
   initialValue: String,
@@ -43,7 +39,7 @@ export const editorProps: CopyProps<IPropTypes> = {
   toolbar: [ String, Array ],
   modelValue: String,
   disabled: Boolean,
-  tinymceScriptSrc: String,
+  hugerteScriptSrc: String,
   outputFormat: {
     type: String,
     validator: (prop: string) => prop === 'html' || prop === 'text'
