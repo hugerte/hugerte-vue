@@ -4,7 +4,7 @@
   "description": "Official HugeRTE Vue 3 Component",
   "private": false,
   "repository": {
-    "url": "https://github.com/hugerte/hugerte-vue"
+    "url": "git+https://github.com/hugerte/hugerte-vue.git"
   },
   "main": "lib/cjs/main/ts/index.js",
   "module": "lib/es2015/main/ts/index.js",
