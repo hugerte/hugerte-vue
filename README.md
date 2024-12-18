@@ -18,7 +18,7 @@ This repo comes with various demos to show various ways of integrating HugeRTE w
    ```
 
 ## Quick start
-Add the HugeRTE Vue component to your project using npm (or an npm-based package manager like yarn) or composer:
+Add the HugeRTE Vue component to your project using npm (or an npm-based package manager like yarn):
 
 ```bash
 npm install @hugerte/hugerte-vue
@@ -30,13 +30,7 @@ or:
 yarn add @hugerte/hugerte-vue
 ```
 
-or:
-
-```bash
-composer require hugerte/hugerte-vue
-```
-
-Then, copy the demo from this repo that is appropriate for you. **Replace `import Editor from "/@/main/ts/index"` by `import Editor from '@hugerte/hugerte-vue'` (or, when loading via composer, `import Editor from 'vendor/hugerte/hugerte-vue/src/main/ts/index'`).** If your code will contain non-trivial portions of demo code, add the text of the [LICENSE.txt](LICENSE.txt) file as a comment to your code or on some „Acknowledgements“ page to ensure legal compliance.
+Then, copy the demo from this repo that is appropriate for you. **Replace `import Editor from "/@/main/ts/index"` by `import Editor from '@hugerte/hugerte-vue'`.** If your code will contain non-trivial portions of demo code, add the text of the [LICENSE.txt](LICENSE.txt) file as a comment to your code or on some „Acknowledgements“ page to ensure legal compliance.
 
 ## Storybook
 This repo also comes with a storybook. The storybook does not contain as many demos as the demos above, but it does show the basic abilities to use HugeRTE in an iframe, in inline mode, with synchronization between the editor and a textarea containing its HTML content output, and in disabled mode.
