@@ -1,6 +1,6 @@
 {
   "name": "@hugerte/hugerte-vue",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Official HugeRTE Vue 3 Component",
   "private": false,
   "repository": {
