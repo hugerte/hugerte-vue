@@ -30,7 +30,7 @@ const build = async (input, output)  => {
     }),
     license({
       banner: [
-        '/**',
+        '/*!',
         ' * <%= pkg.description %> version <%= pkg.version %> (<%= moment().format("YYYY-MM-DD") %>)',
         ' * Copyright (c) 2022 Ephox Corporation DBA Tiny Technologies, Inc.',
         ' * Copyright (c) 2024 HugeRTE contributors',
