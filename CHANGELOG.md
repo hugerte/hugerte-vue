@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 The HugeRTE Vue component 1.0.0 is based on the TinyMCE Vue component 6.1.0.
 
+## 1.0.2 - 2024-12-19
+
+### Fixed
+- Fixed license header not being included in the minified browser build
+- Fixed `rollup-plugin-license` having been a normal dependency instead of a dev dependency
+
 ## 1.0.1 - 2024-12-18
 
 ### Removed
