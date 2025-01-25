@@ -1,4 +1,4 @@
-# Official HugeRTE Vue component
+# HugeRTE Vue component
 
 This package is a thin wrapper around [HugeRTE](https://github.com/hugerte/hugerte) to make it easier to use in a Vue application.
 
