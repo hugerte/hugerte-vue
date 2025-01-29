@@ -68,7 +68,7 @@
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "regenerator-runtime": "^0.13.9",
-    "rimraf": "^5.0.7",
+    "rimraf": "^6.0.1",
     "rollup": "^4.18.0",
     "rollup-plugin-license": "^3.5.3",
     "rollup-plugin-node-resolve": "^5.2.0",
