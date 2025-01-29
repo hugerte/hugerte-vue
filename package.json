@@ -45,7 +45,7 @@
     "@babel/core": "^7.20.2",
     "@ephox/agar": "8.0.1",
     "@ephox/bedrock-client": "^14.1.1",
-    "@ephox/bedrock-server": "^14.1.4",
+    "@ephox/bedrock-server": "^15.0.1",
     "@storybook/addon-actions": "^6.5.13",
     "@storybook/addon-essentials": "^6.5.13",
     "@storybook/addon-links": "^6.5.13",
