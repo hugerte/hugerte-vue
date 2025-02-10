@@ -10147,9 +10147,9 @@ https-proxy-agent@^7.0.0, https-proxy-agent@^7.0.2, https-proxy-agent@^7.0.4:
   integrity sha512-V+FD0x6/BGdWmeFekW8PLz8XOMI/PX1EYRVFaf91zvl7HLgLGtkV+0t3eNGC45bqpXlbPGXWo5Z/f1EePP1nUg==
 
 hugerte@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/hugerte/-/hugerte-1.0.4.tgz#5ab60c43a29099ae6d21b4f3c1d02bad41edd5b6"
-  integrity sha512-V+FD0x6/BGdWmeFekW8PLz8XOMI/PX1EYRVFaf91zvl7HLgLGtkV+0t3eNGC45bqpXlbPGXWo5Z/f1EePP1nUg==
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/hugerte/-/hugerte-1.0.7.tgz#967b7f3ed40da470256685940458ad39746a4c67"
+  integrity sha512-6rKyEOXQ3XZgQs6vH87KPqLZnWXsPTz1m4viYGzcDPlqopvhBijlJTB6FUlnVl9pgt69IpmZWMRNUC48h/tPHQ==
 
 human-signals@^2.1.0:
   version "2.1.0"
