@@ -46,7 +46,7 @@
     "@ephox/agar": "8.0.1",
     "@ephox/bedrock-client": "^14.1.1",
     "@ephox/bedrock-server": "^15.0.1",
-    "@storybook/addon-actions": "^6.5.13",
+    "@storybook/addon-actions": "^8.1.11",
     "@storybook/addon-essentials": "^6.5.13",
     "@storybook/addon-links": "^6.5.13",
     "@storybook/addon-notes": "^5.3.21",
