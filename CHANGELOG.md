@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 The HugeRTE Vue component 1.0.0 is based on the TinyMCE Vue component 6.1.0.
 
-## 2.0.1 - 2025-05-15
+## 2.0.2 - 2025-05-14
 
-WARNING: The Vue 3 component is currently broken. If you're using Vue 3, please stick to 1.x for now.
+### Fixed
+- Allow Vue 2 in peer depencies (only Vue 3 was allowed previously).
+
+## 2.0.1 - 2025-05-14
 
 ### Fixed
 - Added first-level export for the Vue 3 component.
