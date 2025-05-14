@@ -36,6 +36,10 @@
     "vue": "^3.0.0"
   },
   "exports": {
+    ".": {
+      "require": "./dist/bundle.cjs",
+      "import": "./dist/bundle.mjs"
+    },
     "./vue2": {
       "require": "./dist/bundle.cjs",
       "import": "./dist/bundle.mjs"

@@ -14,7 +14,7 @@ const opts = {
  * Copyright (c) 2024 HugeRTE contributors
  * Licensed under the MIT license
  * Parts licensed under the Apache License, Version 2.0 (https://www.apache.org/licenses/LICENSE-2.0)
- * See https://github.com/hugerte/hugerte-vue/blob/main/LICENSE.TXT for more info.
+ * See https://github.com/hugerte/hugerte-vue/blob/9c2b09f/LICENSE.txt for more info.
  */`.trimStart()
 };
 
