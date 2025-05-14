@@ -2,8 +2,7 @@
   "overrides": [
     {
       "files": [
-        "src/**/*.ts",
-        "src/**/*.tsx"
+        "src/**/*.ts"
       ],
       "excludedFiles": [
         "src/demo/demo.ts"

@@ -4,6 +4,7 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "declaration": true,
@@ -17,6 +18,7 @@
     ],
     "strict": true,
     "baseUrl": ".",
+    "noEmit": true,
     "skipLibCheck": true // -> https://github.com/vuejs/vue-next/issues/1102 TODO
   },
   "include": [

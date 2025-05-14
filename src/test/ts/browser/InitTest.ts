@@ -1,86 +1,34 @@
 import { Assertions, Keyboard, Keys } from '@ephox/agar';
-import { pRender, remove } from '../alien/Loader';
+import { pRender as pRender3, remove, type Context } from '../alien/Loader';
+import { pRender as pRender2, remove as remove2 } from '../alien/Vue2Loader';
 import { SugarElement } from '@ephox/sugar';
 import { describe, it, afterEach, before, context, after } from '@ephox/bedrock-client';
-import { cleanupGlobalHugeRTE } from '../alien/TestHelper';
-import { HugeRTE } from '../alien/Types';
+import { cleanupGlobalHugeRTE, pLoadVersion } from '@hugerte/framework-integration-shared';
 
-/* Based on code from TinyMCE, MODIFIED */
-/* See LEGAL.txt for the original license information */
-const loadScript = (url: string, success: () => void, failure: (err: Error) => void): void => {
-  const script = document.createElement('script');
-  script.src = url;
-
-  const onLoad = () => {
-    script.removeEventListener('load', onLoad);
-    script.removeEventListener('error', onError);
-    success();
-  };
-
-  const onError = () => {
-    script.removeEventListener('error', onError);
-    script.removeEventListener('load', onLoad);
-    failure(new Error(`Failed to load script: ${url}`));
-  };
-
-  script.addEventListener('load', onLoad);
-  script.addEventListener('error', onError);
-  document.body.appendChild(script);
-};
-
-const getHugeRTE = (): HugeRTE | undefined => (globalThis as any).hugerte as HugeRTE | undefined;
-
-const setHugeRTEBaseUrl = (hugerte: any, baseUrl: string): void => {
-  const prefix = document.location.protocol + '//' + document.location.host;
-  hugerte.baseURL = baseUrl.indexOf('://') === -1 ? prefix + baseUrl : baseUrl;
-  hugerte.baseURI = new hugerte.util.URI(hugerte.baseURL);
-};
-
-const updateHugeRTEUrls = (packageName: string): void => {
-  const hugerte = getHugeRTE();
-  if (hugerte) {
-    setHugeRTEBaseUrl(hugerte, `/project/node_modules/${packageName}`);
+const pRender = (vueVersion: string) => {
+  switch (vueVersion) {
+    case '2':
+      return pRender2;
+    case '3':
+      return pRender3;
+    default:
+      throw new Error('Unsupported Vue version: ' + vueVersion);
   }
 };
 
-const versionToPackageName = (version: string) => version === 'latest' ? 'hugerte' : `hugerte-${version}`;
-
-const unload = (): void => {
-  const hugerte = getHugeRTE();
-  if (hugerte) {
-    hugerte.remove();
-  }
-  cleanupGlobalHugeRTE();
-};
-
-const load = (version: string, success: () => void, failure: (err: Error) => void): void => {
-  const packageName = versionToPackageName(version);
-
-  unload();
-  loadScript(`/project/node_modules/${packageName}/hugerte.min.js`, () => {
-    updateHugeRTEUrls(versionToPackageName(version));
-    success();
-  }, failure);
-};
-
-const pLoadVersion = (version: string): Promise<void> =>
-  new Promise((resolve, reject) => {
-    load(version, resolve, reject);
-  });
-/* End of code based on Apache-licensed code. */
+let vmContext: Context;
 
 describe('Editor Component Initialization Tests', () => {
-  // eslint-disable-next-line @typescript-eslint/require-await
-  const pFakeType = async (str: string, vmContext: any) => {
+  const pFakeType = async (str: string) => {
     vmContext.editor.getBody().innerHTML = '<p>' + str + '</p>';
     Keyboard.keystroke(Keys.space(), {}, SugarElement.fromDom(vmContext.editor.getBody()) as SugarElement<Node>);
   };
 
-  [ '1' ].forEach((version) => {
-    context(`Version: ${version}`, () => {
+  [[ '1', '2' ], [ '1', '3' ]].forEach(([ editorVersion, vueVersion ]) => {
+    context(`Editor Version: ${editorVersion}, Vue Version: ${vueVersion}`, () => {
 
       before(async () => {
-        await pLoadVersion(version);
+        await pLoadVersion(editorVersion);
       });
 
       after(() => {
@@ -88,11 +36,20 @@ describe('Editor Component Initialization Tests', () => {
       });
 
       afterEach(() => {
-        remove();
+        switch (vueVersion) {
+          case '2':
+            remove2(vmContext);
+            break;
+          case '3':
+            remove();
+            break;
+          default:
+            throw new Error('Unsupported Vue version: ' + vueVersion);
+        }
       });
 
       it('should not be inline by default', async () => {
-        const vmContext = await pRender({}, `
+        vmContext = await pRender(vueVersion)({}, `
           <editor
             :init="init"
           ></editor>`);
@@ -100,7 +57,7 @@ describe('Editor Component Initialization Tests', () => {
       });
 
       it('should be inline with inline attribute in template', async () => {
-        const vmContext = await pRender({}, `
+        vmContext = await pRender(vueVersion)({}, `
           <editor
             :init="init"
             :inline="true"
@@ -109,35 +66,35 @@ describe('Editor Component Initialization Tests', () => {
       });
 
       it('should be inline with inline option in init', async () => {
-        const vmContext = await pRender({ init: { inline: true }});
+        vmContext = await pRender(vueVersion)({ init: { inline: true }});
         Assertions.assertEq('Editor should be inline', true, vmContext.editor.inline);
       });
 
       it('should handle one-way binding with output-format="text"', async () => {
-        const vmContext = await pRender({
+        vmContext = await pRender(vueVersion)({
           content: undefined,
         }, `
           <editor
             :init="init"
-            @update:modelValue="content=$event"
+            ${vueVersion === '2' ? 'v-on:input' : /* vue3*/ '@update:modelValue'}="content = $event"
             output-format="text"
           ></editor>
         `);
-        await pFakeType('A', vmContext);
+        await pFakeType('A');
         Assertions.assertEq('Content emitted should be of format="text"', 'A', vmContext.vm.content);
       });
 
       it('should handle one-way binding with output-format="html"', async () => {
-        const vmContext = await pRender({
+        vmContext = await pRender(vueVersion)({
           content: undefined,
         }, `
           <editor
             :init="init"
-            @update:modelValue="content=$event"
+            ${vueVersion === '2' ? 'v-on:input' : /* vue3*/ '@update:modelValue'}="content = $event"
             output-format="html"
           ></editor>
         `);
-        await pFakeType('A', vmContext);
+        await pFakeType('A');
         Assertions.assertEq('Content emitted should be of format="html"', '<p>A</p>', vmContext.vm.content);
       });
     });

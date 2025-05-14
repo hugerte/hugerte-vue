@@ -1,6 +1,7 @@
-import Editor from 'src/main/ts/index';
+import Editor from 'src/main/ts/components/Vue2Editor';
 
-import { createApp } from 'vue';
+// @ts-expect-error No types for the runtime compiler...or where are they?? TODO
+import Vue from 'vue2/dist/vue.esm.js';
 
 export interface Context {
   editor: any;
@@ -24,11 +25,12 @@ const pRender = (data: Record<string, any> = {}, template: string = `<editor :in
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   const originalSetup = originalInit.setup || (() => {});
 
-  const vm = createApp({
-    template,
+  const vm = new Vue({
     components: {
-      Editor
+      editor: Editor
     },
+    /* eslint-disable-next-line */
+    template,
     data: () => ({
       ...data,
       outputFormat: 'text',
@@ -44,10 +46,13 @@ const pRender = (data: Record<string, any> = {}, template: string = `<editor :in
         }
       }
     }),
-  }).mount(mountPoint);
+  });
+
+  vm.$mount(mountPoint);
 });
 
-const remove = () => {
+const remove = (context: Context) => {
+  context.vm.$destroy();
   getRoot().remove();
 };
 

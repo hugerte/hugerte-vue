@@ -6,9 +6,9 @@
  *
  */
 
-import { ScriptLoader } from '../ScriptLoader';
+import { ScriptLoader, mergePlugins, isTextarea, uuid } from '@hugerte/framework-integration-shared';
 import { getHugeRTE } from '../HugeRTE';
-import { isTextarea, mergePlugins, uuid, isNullOrUndefined, initEditor } from '../Utils';
+import { initEditor } from '../Utils';
 import { editorProps, IPropTypes } from './EditorPropTypes';
 import { h, defineComponent, onMounted, ref, Ref, toRefs, nextTick, watch, onBeforeUnmount, onActivated, onDeactivated } from 'vue';
 import type { Editor as HugeRTEEditor, EditorEvent, HugeRTE } from 'hugerte';
@@ -60,7 +60,7 @@ export const Editor = defineComponent({
         setup: (editor: HugeRTEEditor) => {
           vueEditor = editor;
           editor.on('init', (e: EditorEvent<any>) => initEditor(e, props, ctx, editor, modelValue, content));
-          if (typeof conf.setup === 'function') {
+          if (typeof conf.setup === 'function') { // TODO: add that to other framework integrations, especially svelte
             conf.setup(editor);
           }
         }
@@ -85,6 +85,8 @@ export const Editor = defineComponent({
         cache = vueEditor.getContent();
       }
       getHugeRTE()?.remove(vueEditor);
+      // TODO
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       nextTick(() => initWrapper());
     });
     onMounted(() => {
@@ -92,9 +94,8 @@ export const Editor = defineComponent({
         initWrapper();
       } else if (element.value && element.value.ownerDocument) {
         const version = props.cdnVersion ?? '1';
-        const scriptSrc: string = isNullOrUndefined(props.hugerteScriptSrc) ?
-          `https://cdn.jsdelivr.net/npm/hugerte@${version}/hugerte.min.js` :
-          props.hugerteScriptSrc;
+        const scriptSrc: string = props.hugerteScriptSrc ??
+          `https://cdn.jsdelivr.net/npm/hugerte@${version}/hugerte.min.js`;
         ScriptLoader.load(
           element.value.ownerDocument,
           scriptSrc,
@@ -124,6 +125,8 @@ export const Editor = defineComponent({
       cache = vueEditor.getContent();
       getHugeRTE()?.remove(vueEditor);
       conf = { ...conf, ...init, ...defaultInitValues };
+      // TODO
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       nextTick(() => initWrapper());
     };
     ctx.expose({

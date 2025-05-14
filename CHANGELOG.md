@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 The HugeRTE Vue component 1.0.0 is based on the TinyMCE Vue component 6.1.0.
 
+## 2.0.0 - 2025-05-14
+
+### Changed
+- The lib directory has been removed. The browser build is not supported anymore. The new cjs and esm files are now pre-bundled in the dist directory. If you have been importing or requiring this package normally, this should have no big effect on you.
+
+### Added
+- Added support for Vue 2. If you'd like to use this library in a Vue 2 project, add `/vue2` to the package name when importing: `import Editor from '@hugerte/hugerte-vue/vue2'`.
+
 ## 1.0.2 - 2024-12-19
 
 ### Fixed
