@@ -15,7 +15,7 @@
     "@hugerte/framework-integration-shared": "^1.0.1",
     "@tinymce/eslint-plugin": "^3.0.0",
     "@types/bun": "^1.2.13",
-    "@types/node": "^22.15.17",
+    "@types/node": "^24.0.7",
     "@vitejs/plugin-vue": "^5.2.4",
     "@vue/compiler-sfc": "^3.5.13",
     "file-loader": "^6.2.0",
